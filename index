@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Document Layout Analysis - Image Gallery">
+    <meta name="keywords" content="Document Layout Analysis, Gallery, Visualization">
+    <meta name="author" content="Your Name">
+    <title>Document Layout Analysis Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 5px;
+        }
+
+        .modal .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2em;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .modal .nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .modal .prev {
+            left: 30px;
+        }
+
+        .modal .next {
+            right: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="gallery">
+    <img src="image1.jpg" alt="Image 1" data-index="0">
+    <img src="image2.jpg" alt="Image 2" data-index="1">
+    <img src="image3.jpg" alt="Image 3" data-index="2">
+    <img src="image4.jpg" alt="Image 4" data-index="3">
+    <img src="image5.jpg" alt="Image 5" data-index="4">
+</div>
+
+<div class="modal" id="modal">
+    <span class="close" id="close">&times;</span>
+    <span class="nav prev" id="prev">&#10094;</span>
+    <img id="modal-image" src="" alt="Modal Image">
+    <span class="nav next" id="next">&#10095;</span>
+</div>
+
+<script>
+    const gallery = document.querySelectorAll('.gallery img');
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modal-image');
+    const closeBtn = document.getElementById('close');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+
+    let currentIndex = 0;
+
+    gallery.forEach((img, index) => {
+        img.addEventListener('click', () => {
+            modal.style.display = 'flex';
+            modalImage.src = img.src;
+            currentIndex = index;
+        });
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : gallery.length - 1;
+        modalImage.src = gallery[currentIndex].src;
+    });
+
+    nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex < gallery.length - 1) ? currentIndex + 1 : 0;
+        modalImage.src = gallery[currentIndex].src;
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
